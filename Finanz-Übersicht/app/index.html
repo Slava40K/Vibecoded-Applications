@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kassensturz</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='4' y='2' width='24' height='28' fill='%23FBFCF8' stroke='%2316241B' stroke-width='2'/%3E%3Crect x='4' y='9' width='24' height='5' fill='%23B9D3AE'/%3E%3Crect x='4' y='19' width='24' height='5' fill='%23B9D3AE'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+</head>
+<body>
+  <header class="masthead">
+    <h1 class="wordmark">Kassensturz</h1>
+    <p class="lede">Leg deinen Kontoauszug ein und sieh, wohin dein Geld geht. Die Auswertung passiert in diesem Browser. Der Auszug wird nirgendwohin hochgeladen.</p>
+  </header>
+
+  <main>
+    <!-- Einzug: leeres Endlospapier -->
+    <section class="feed" id="intake" aria-labelledby="intake-title">
+      <div class="sheet sheet--blank" id="dropzone">
+        <div class="sheet__body intake">
+          <h2 id="intake-title" class="intake__title">Kontoauszug hier ablegen</h2>
+          <p class="intake__hint">PDF aus dem Online-Banking hierher ziehen. Mehrere Monate gehen auch, einfach alle Dateien zusammen ablegen.</p>
+          <div class="intake__actions">
+            <label class="btn btn--primary">
+              <input type="file" id="file-input" accept="application/pdf,.pdf" multiple hidden>
+              PDF auswählen
+            </label>
+            <button type="button" class="btn btn--quiet" id="demo-btn">Mit Beispielauszug ausprobieren</button>
+          </div>
+          <p class="intake__status" id="status" role="status" aria-live="polite"></p>
+          <details class="rawtext" id="rawtext" hidden>
+            <summary>Erkannten Text anzeigen</summary>
+            <pre id="rawtext-pre"></pre>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- Ausdruck: Auswertung -->
+    <section class="feed" id="report" hidden aria-labelledby="report-title">
+      <div class="demo-banner" id="demo-banner" hidden>
+        <span>Das ist der Beispielauszug. Er wird nicht gespeichert.</span>
+        <button type="button" class="btn btn--small" id="demo-close">Beispiel schließen</button>
+      </div>
+
+      <div class="toolbar">
+        <label class="btn btn--primary">
+          <input type="file" id="file-input-more" accept="application/pdf,.pdf" multiple hidden>
+          Auszug hinzufügen
+        </label>
+        <button type="button" class="btn btn--quiet" id="export-btn">Als CSV exportieren</button>
+        <button type="button" class="btn btn--quiet" id="delete-btn">Monat löschen</button>
+        <div class="viewswitch" id="viewswitch" role="group" aria-label="Ansicht">
+          <button type="button" data-mode="list" aria-pressed="true">Liste</button>
+          <button type="button" data-mode="chart" aria-pressed="false">Diagramm</button>
+        </div>
+      </div>
+
+      <!-- Register wie bei einem Aktenordner: Jahr, Monate, ganzes Jahr -->
+      <nav class="register" id="register" aria-label="Zeitraum wählen">
+        <div class="register__years" id="register-years"></div>
+        <div class="register__tabs" id="register-tabs"></div>
+      </nav>
+
+      <article class="sheet sheet--printed" id="printout">
+        <div class="sheet__body">
+          <header class="stmt">
+            <h2 id="report-title" class="stmt__title">Auswertung</h2>
+            <p class="stmt__meta" id="stmt-meta"></p>
+          </header>
+
+          <div class="equation" id="equation" aria-label="Bilanz"></div>
+          <p class="average" id="average" hidden></p>
+          <div class="reconcile" id="reconcile" hidden></div>
+
+          <div id="listview">
+            <div class="split" id="split"></div>
+            <p class="hint" id="hint" hidden></p>
+            <div id="groups"></div>
+          </div>
+
+          <div id="chartview" hidden>
+            <div class="charts" id="charts"></div>
+            <div class="chart-tip" id="chart-tip" hidden></div>
+          </div>
+        </div>
+      </article>
+
+      <p class="storage-note" id="storage-note"></p>
+    </section>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

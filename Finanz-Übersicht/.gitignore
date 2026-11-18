@@ -1,0 +1,11 @@
+# Gespeicherte Auszüge und Buchungen niemals einchecken
+daten/
+*.json.bak
+
+# Eigene Kontoauszüge
+*.PDF
+*.pdf
+!app/beispiel/*.pdf
+
+# Exporte
+*.csv
